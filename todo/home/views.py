@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from datetime import date, datetime
 from django.contrib.auth import authenticate, login, logout
+from .models import Task
 
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -66,6 +67,9 @@ def logout_user(request):
 def homepage(request):
     if request.user.is_authenticated:
         #send_mail(subject, body, sender, recipient)
-        return render(request, 'homepage.html', {})
+        your_tasks = Task.objects.filter(user=request.user)
+        return render(request, 'homepage.html', {
+            'your_tasks': your_tasks,
+        })
     else:
         return redirect('loginpage')
