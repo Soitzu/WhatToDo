@@ -36,7 +36,7 @@ def redirect_homepage(request):
     return redirect('homepage')
 
 
-### Login + Logout
+### Login + Logout Start
 def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -51,14 +51,21 @@ def login_user(request):
             return redirect('loginpage')
     return render(request, 'loginpage.html', {})
 
-def logout_user(request):
-    logout(request)
-    messages.success(request, 'Logout successful')
-    return redirect('loginpage')
 
+def logout_user(request):
+    if request.user.is_authenticated:
+        logout(request)
+        messages.success(request, 'Logout successful')
+        return redirect('loginpage')
+    else:
+        return redirect('loginpage')
+### Login + Logout End
 
 
 
 def homepage(request):
-    #send_mail(subject, body, sender, recipient)
-    return render(request, 'homepage.html', {})
+    if request.user.is_authenticated:
+        #send_mail(subject, body, sender, recipient)
+        return render(request, 'homepage.html', {})
+    else:
+        return redirect('loginpage')
