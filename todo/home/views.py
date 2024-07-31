@@ -34,10 +34,13 @@ def send_mail(subject, body, sender, recipient):
 
 
 def redirect_homepage(request):
-    return redirect('homepage')
+    if request.user.is_authenticated:
+        return redirect('homepage')
+    else:
+        return redirect('loginpage')
 
 
-### Login + Logout Start
+### Login + Logout
 def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -60,7 +63,7 @@ def logout_user(request):
         return redirect('loginpage')
     else:
         return redirect('loginpage')
-### Login + Logout End
+### End
 
 
 
